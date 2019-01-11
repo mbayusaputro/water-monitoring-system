@@ -18,7 +18,7 @@ class Table extends React.Component{
   render(){
     return(
       <Container>
-        {/* <Content>
+        <Content>
           <Grid>
             <Row>
               <Col><Text>Time</Text></Col>
@@ -27,14 +27,7 @@ class Table extends React.Component{
               <Col><Text>Height</Text></Col>
             </Row>
           </Grid>
-        </Content> */}
-        <View style={styles.table}>
-          {
-            this.data.map(()=> {
-                return this.renderRow();
-            })
-          }
-        </View>
+        </Content>
       </Container>
     )
   }

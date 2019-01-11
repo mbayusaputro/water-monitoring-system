@@ -27,7 +27,13 @@ const Root = createStackNavigator ({
         screen: About
     },
 },{
-    initialRouteName: 'Splash'
+    initialRouteName: 'Splash',
+    defaultNavigationOptions: {
+        headerStyle : {
+            backgroundColor: '#C3E4DD'
+        },
+        headerTintColor : '#566792'
+    }
 })
 
 export default createAppContainer(Root);

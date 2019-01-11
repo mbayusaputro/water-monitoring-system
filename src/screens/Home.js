@@ -9,7 +9,7 @@ class Home extends React.Component {
 
   render(){
     return(
-      <Container style={{justifyContent:'center'}}>
+      <Container style={{justifyContent:'center', backgroundColor: '#C3E4DD'}}>
         <View style={styles.wms}>
         <Thumbnail source={{uri: 'https://bit.ly/2sp7tNz'}}/>
           <Text>Water Monitoring System</Text>
@@ -22,7 +22,7 @@ class Home extends React.Component {
                 <Text style={styles.h1}>6.7</Text>
               </View>
               <View style={styles.vtext}>
-                <Text note>Water pH</Text>
+                <Text>Water pH</Text>
               </View>
             </View>
           </View>
@@ -33,7 +33,7 @@ class Home extends React.Component {
                 <Text style={styles.h1}>30</Text>
               </View>
               <View style={styles.vtext}>
-                <Text note>Temperature</Text>
+                <Text>Temperature</Text>
               </View>
             </View>
           </View>
@@ -46,7 +46,7 @@ class Home extends React.Component {
                 <Text style={styles.h1}>6.7</Text>
               </View>
               <View style={styles.vtext}>
-                <Text>Water pH</Text>
+                <Text>Height(cm)</Text>
               </View>
             </View>
           </View>
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'row',
-        backgroundColor: 'red',
+        backgroundColor: '#ACDAD0',
         borderRadius: 20,
         padding: 10,
         margin: 5
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 10,
         margin: 5,
-        backgroundColor: 'red',
+        backgroundColor: '#ACDAD0',
         borderRadius: 20,
         height: 100
     },
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
         padding: 10,
         margin: 5,
         width: 164,
-        backgroundColor: 'red',
+        backgroundColor: '#ACDAD0',
         borderRadius: 20,
         height: 100
     },
