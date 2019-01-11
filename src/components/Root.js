@@ -7,7 +7,9 @@ import About from '../screens/About';
 const Root = createStackNavigator ({
     Splash: {
         screen: Splash,
-        headerMode:'none'
+        navigationOptions: {
+            header:null
+        }
     },
     Home: {
         screen: Home,
@@ -25,7 +27,7 @@ const Root = createStackNavigator ({
         screen: About
     },
 },{
-    initialRouteName: 'Home'
+    initialRouteName: 'Splash'
 })
 
 export default createAppContainer(Root);
