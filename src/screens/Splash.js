@@ -1,8 +1,12 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import Loader from 'react-native-mask-loader';
+import React, { Component } from 'react';
+import {
+  StyleSheet,
+  Text,
+  Image,
+  View
+} from 'react-native';
 
-class App extends React.Component{
+class Splash extends Component {
   state = {
     appReady: false,
   };
@@ -28,22 +32,31 @@ class App extends React.Component{
             this.props.navigation.navigate('Home')
         }
     }, 1000);
+        return (
+            <Image source={this._image}
+                  style={styles.backgroundImage}>
 
-    return(
-        <Loader
-        isLoaded={this.state.appReady}
-        imageSource={this._image}
-        // backgroundStyle={styles.loadingBackgroundStyle}
-        >
-        </Loader>
-    )
-  }
+                  {this.props.children}
+
+            </Image>
+        )
+    }
 }
 
-export default App;
+export default Splash;
 
 const styles = StyleSheet.create({
-  loadingBackgroundStyle: {
-    // backgroundColor: 'rgba(125, 125, 255, 1)',
-  },
+    backgroundImage: {
+        flex: 1,
+        width: null,
+        height: null,
+        resizeMode: 'cover'
+    },
+
+    text: {
+        textAlign: 'center',
+        color: 'blue',
+        backgroundColor: 'rgba(0,0,0,0)',
+        fontSize: 32
+    }
 });
