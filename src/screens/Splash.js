@@ -7,9 +7,9 @@ import {
 } from 'react-native';
 
 class Splash extends Component {
-  state = {
-    appReady: false,
-  };
+//   state = {
+//     appReady: false,
+//   };
 
   constructor(){
     super();
@@ -21,17 +21,20 @@ class Splash extends Component {
   }
 
   resetAnimation(){
-    this.setState({
-      appReady: true
-    });
+    // this.setState({
+    //   appReady: true
+    // });
+    setTimeout(()=>{
+        this.props.navigation.navigate('Home')
+    }, 1000);
   }
 
   render(){
-    setTimeout(()=> {
-        if(this.state.appReady === true){
-            this.props.navigation.navigate('Home')
-        }
-    }, 1000);
+    // setTimeout(()=> {
+    //     if(this.state.appReady === true){
+    //         this.props.navigation.navigate('Home')
+    //     }
+    // }, 1000);
         return (
             <Image source={this._image}
                   style={styles.backgroundImage}>

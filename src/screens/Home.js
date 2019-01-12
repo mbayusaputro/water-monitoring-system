@@ -129,8 +129,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     h1: {
-        fontWeight: 'bold',
-        fontSize: 50
+        fontSize: 50,
+        fontFamily: 'Roboto'
     },
     vtext: {
         alignItems: 'center',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, WebView } from 'react-native';
+import { View, StyleSheet, WebView as Tables } from 'react-native';
 import { Container, Row, Col, Text, Content, Grid, Spinner } from 'native-base';
 
 class Table extends React.Component{
@@ -8,7 +8,7 @@ class Table extends React.Component{
   }
   render(){
     return(
-      <WebView
+      <Tables
       source={{uri: 'http://139.180.220.65:3333/table'}}
       style={{marginTop: 0, backgroundColor : '#C3E4DD'}}
       renderLoading={this.renderLoading}
