@@ -1,8 +1,24 @@
 import React from 'react';
-import { View, StyleSheet, WebView } from 'react-native';
+import { View, StyleSheet, WebView, BackHandler } from 'react-native';
 import { Container, Row, Col, Text, Content, Grid, Spinner } from 'native-base';
 
 class Table extends React.Component{
+  constructor(props) {
+    super(props);
+  }
+
+  componentWillMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  handleBackButton = () => {
+    this.props.navigation.pop()
+    return true;
+  };
   renderLoading(){
     return(<Spinner />)
   }
@@ -12,7 +28,7 @@ class Table extends React.Component{
       source={{uri: 'http://139.180.220.65:3333/table'}}
       style={{marginTop: 0, backgroundColor : '#C3E4DD'}}
       renderLoading={this.renderLoading}
-    startInLoadingState
+      startInLoadingState
     />
       // <Container>
       //   {/* <Content>
