@@ -10,7 +10,7 @@ class Table extends React.Component{
     return(
       <WebView
       source={{uri: 'http://139.180.220.65:3333/table'}}
-      style={{marginTop: 20}}
+      style={{marginTop: 0, backgroundColor : '#C3E4DD'}}
       renderLoading={this.renderLoading}
     startInLoadingState
     />
