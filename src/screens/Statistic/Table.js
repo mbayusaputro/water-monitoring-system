@@ -1,18 +1,37 @@
 import React from 'react';
-import { View, StyleSheet, WebView as Tables } from 'react-native';
-import { Container, Row, Col, Text, Content, Grid, Spinner } from 'native-base';
+import {
+  StyleSheet,
+  WebView as Tables,
+  BackHandler } from 'react-native';
+import { Spinner } from 'native-base';
 
 class Table extends React.Component{
+  constructor(props) {
+    super(props);
+  }
+
+  componentWillMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  handleBackButton = () => {
+    this.props.navigation.pop()
+    return true;
+  };
   renderLoading(){
     return(<Spinner />)
   }
   render(){
     return(
       <Tables
-      source={{uri: 'http://139.180.220.65:3333/table'}}
+      source={{uri: 'https://bit.ly/2RmcQfv'}}
       style={{marginTop: 0, backgroundColor : '#C3E4DD'}}
       renderLoading={this.renderLoading}
-    startInLoadingState
+      startInLoadingState
     />
       // <Container>
       //   {/* <Content>

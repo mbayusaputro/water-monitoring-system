@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import {
   StyleSheet,
-  Text,
-  Image,
-  View
-} from 'react-native';
+  Image } from 'react-native';
 
 class Splash extends Component {
 //   state = {
