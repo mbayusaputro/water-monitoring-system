@@ -1,16 +1,10 @@
-import { createStackNavigator, createAppContainer } from 'react-navigation';
+import { createStackNavigator, createAppContainer, createSwitchNavigator } from 'react-navigation';
 import Splash from '../screens/Splash';
 import Home from '../screens/Home';
 import Statistic from '../screens/Statistic';
 import About from '../screens/About';
 
 const Root = createStackNavigator ({
-    Splash: {
-        screen: Splash,
-        navigationOptions: {
-            header:null
-        }
-    },
     Home: {
         screen: Home,
         navigationOptions: {
@@ -24,16 +18,26 @@ const Root = createStackNavigator ({
         }
     },
     About: {
-        screen: About
+        screen: About,
+        navigationOptions: {
+            header:null
+        }
     },
 },{
-    initialRouteName: 'Splash',
+    initialRouteName: 'Home',
     defaultNavigationOptions: {
         headerStyle : {
-            backgroundColor: '#C3E4DD'
+            backgroundColor: '#C3E4DD',
+            elevation: 0,
+            height: 50
         },
         headerTintColor : '#566792'
     }
+});
+
+const switchNavigator = createSwitchNavigator ({
+    Splash : Splash,
+    App: Root
 })
 
-export default createAppContainer(Root);
+export default createAppContainer(switchNavigator);

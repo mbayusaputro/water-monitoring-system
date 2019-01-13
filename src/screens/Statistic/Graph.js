@@ -1,36 +1,41 @@
 import React from 'react';
-import { View, BackHandler, WebView, Text, Dimensions, StyleSheet} from 'react-native';
+import { View, BackHandler, Text, Dimensions, StyleSheet, Switch} from 'react-native';
 import { Spinner, Container, Content } from 'native-base';
-import {
-  LineChart
-} from 'react-native-chart-kit'
-import { LineChart as LN, YAxis, Grid, AreaChart,XAxis} from 'react-native-svg-charts'
-import axios from 'axios'
-import * as shape from 'd3-shape'
+import { LineChart } from 'react-native-chart-kit';
+import axios from 'axios';
 
-const chartConfigs = {
-  backgroundColor: '#e26a00',
-  backgroundGradientFrom: '#fb8c00',
-  backgroundGradientTo: '#ffa726',
-  decimalPlaces: 2, // optional, defaults to 2dp
-  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-  style: {
-    borderRadius: 16
-  }
+const chartConfig =
+{
+  backgroundGradientFrom: '#ACDAD0',
+  backgroundGradientTo: '#C3E4DD',
+  color: (opacity = 1) => `rgba(0, 45, 223, ${opacity})`
 }
+const chartSuhu =
+{
+  backgroundGradientFrom: '#ACDAD0',
+  backgroundGradientTo: '#C3E4DD',
+  color: (opacity = 1) => `rgba(223, 45, 0, ${opacity})`
+}
+const width = Dimensions.get('window').width
+const height = 220
+
 class Graph extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      ikan: []
+      chartPH: false,
+      chartC: false,
+      ikan: [],
+      tanggal: []
     }
   }
 
   componentDidMount() {
     axios.get('http://139.180.220.65:3333/data?limit=all').then((res) => {
-      this.setState({ ikan: res.data })
+      this.setState({ ikan: res.data, tanggal: res.data.waktu })
     })
   }
+
   componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
   }
@@ -39,102 +44,101 @@ class Graph extends React.Component {
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
   }
 
+  cWater(){
+    this.setState({chartPH:true});
+  }
+
+  cSuhu(){
+    this.setState({chartC:true});
+  }
+
   handleBackButton = () => {
     this.props.navigation.pop()
     return true;
   };
+
   renderLoading() {
     return (<Spinner />)
   }
+
+  renderChartph(){
+    if(this.state.chartPH === true){
+      return(
+        <LineChart
+        data={{
+          labels: this.state.tanggal,
+          datasets: [{
+            data: this.state.ikan.ph
+          }]
+        }}
+        width={width}
+        height={height}
+        chartConfig={chartConfig}
+        bezier
+        style={{
+          marginVertical: 8,
+        }}
+        />
+      )
+    }
+  }
+
+  renderChartc(){
+    if(this.state.chartC === true){
+      return(
+        <LineChart
+        data={{
+          labels: this.state.tanggal,
+          datasets: [{
+            data: this.state.ikan.suhu
+          }]
+        }}
+        width={width}
+        height={height}
+        chartConfig={chartSuhu}
+        bezier
+        style={{
+          marginVertical: 8,
+        }}
+        />
+      )
+    }
+  }
+
   render() {
-    const contentInset = { top: 20, bottom: 20 }
-    const data = [ 3, 5, 7, 10, 15, 18, 20, 22, 25, 26, 28, 30]
     return (
       <Container>
         <Content style={{ backgroundColor: '#C3E4DD' }}>
           {
             (this.state.ikan.length < 1) ? <Spinner /> :
             <View>
-              <View style={{ height: 200, flexDirection: 'row' }}>
-                <YAxis
-                    data={ data }
-                    contentInset={ contentInset }
-                    svg={{
-                        fill: 'grey',
-                        fontSize: 10,
-                    }}
-                    numberOfTicks={ 10 }
-                    formatLabel={ value => `${value}` }
-                />
-                <AreaChart
-                    style={ { flex: 1 } }
-                    data={ this.state.ikan.suhu }
-                    svg={{ fill: 'rgba(29, 170, 102, 0.5)' }}
-                    contentInset={ { top: 20, bottom: 20 } }
-                    curve={ shape.curveNatural }
-                >
-                    <Grid/>
-                </AreaChart>
-                <AreaChart
-                    style={ StyleSheet.absoluteFill }
-                    data={ this.state.ikan.ph }
-                    svg={{ fill: 'rgba(34, 128, 176, 0.5)' }}
-                    contentInset={ { top: 20, bottom: 20 } }
-                    curve={ shape.curveNatural }
-                />
-                <AreaChart
-                    style={ StyleSheet.absoluteFill }
-                    data={ this.state.ikan.tinggi }
-                    svg={{ fill: 'rgba(104, 18, 156, 0.5)' }}
-                    contentInset={ { top: 20, bottom: 20 } }
-                    curve={ shape.curveNatural }
-                />
-                {/* <Text style={{ alignContent: 'center', textAlign : 'center', fontSize: 14, fontWeight:'bold' }}>
-             Bezier Line Chart
-            </Text>
-           <LineChart
-             data={{
-               labels: this.state.ikan.waktu,
-               datasets: [{
-                data: this.state.ikan.suhu
-                },
-                {
-                  data: this.state.ikan.ph
-                },  
-                {
-                  data: this.state.ikan.tinggi
-                }
-               
-               
-               ]
-             }}
-             width={Dimensions.get('window').width} // from react-native
-             height={500}
-             chartConfig={chartConfigs}            
-             bezier
-             style={{
-               marginVertical: 8,
-               borderRadius: 16
-             }}
-           /> */}
+              <View style={{flexDirection:'row'}}>
+                <Text style={styles.title}>Water pH</Text>
+                <Switch style={styles.note}
+                onValueChange={value => this.setState({ chartPH: value })}
+                value={this.state.chartPH}/>
               </View>
-               <View style={{ marginTop : 30, paddingLeft : 20 }}>
-                <Text style={{ marginBottom : 10, fontWeight : 'bold', fontSize : 16 }}>Information : </Text>
-                <Text style={{ fontSize : 12 }}>
-                  PH meter adalah sebuah alat elektronik yang berfungsi untuk mengukur pH (derajat keasaman atau kebasaan) suatu cairan (ada elektroda khusus yang berfungsi untuk mengukur pH bahan-bahan semi-padat). 
-                  Sebuah pH meter terdiri dari sebuah elektroda (probe pengukur) yang terhubung ke sebuah alat elektronik yang mengukur dan menampilkan nilai pH. alat ini sangat berguna untuk industri air minum, laboratorium, akuarium, industri pakaian terutama batik dan pewarna pakaian 
-                  (wikipedia)
+              {this.renderChartph()}
+
+              <View style={{flexDirection:'row'}}>
+                <Text style={styles.title}>Temperature </Text>
+                <Switch style={styles.note}
+                onValueChange={value => this.setState({ chartC: value })}
+                value={this.state.chartC}/>
+              </View>
+              {this.renderChartc()}
+
+              <View style={styles.text}>
+                <Text style={styles.texttitle}>Information : </Text>
+                <Text style={styles.textcontent}>
+                  1. Level pH kolam ikan lele yang baik berkisar 6-9.
                 </Text>
-                <Text style={{ fontSize : 12, marginTop : 10}}>
-                  Elektrode adalah konduktor yang digunakan untuk bersentuhan dengan bagian atau media non-logam dari sebuah sirkuit (misal semikonduktor, elektrolit atau vakum). Ungkapan kata ini diciptakan oleh ilmuwan Michael Faraday dari bahasa Yunani elektron (berarti amber, dan hodos sebuah cara). 
-                  (wikipedia)
+                <Text style={styles.textcontent1}>
+                  2. Kondisi suhu kolam yang intensif untuk ikan lele adalah berkisar 22&deg;celcius - 32&deg;celcius 
                 </Text>
               </View>
-            </View>
-            
+            </View>            
           }
-
-
         </Content>
       </Container>
     )
@@ -142,3 +146,33 @@ class Graph extends React.Component {
 }
 
 export default Graph;
+
+const styles = StyleSheet.create({
+  title : {
+    flex: 1,
+    marginVertical: 8,
+    marginLeft: 10,
+    fontWeight: 'bold'
+  },
+  note: {
+    flex: 1,
+    marginVertical: 8
+  },
+  text: {
+    marginTop: 30,
+    paddingLeft: 20
+  },
+  texttitle: {
+    marginBottom: 10,
+    fontWeight: 'bold',
+    fontSize: 16
+  },
+  textcontent: {
+    fontSize: 12
+  },
+  textcontent1: {
+    fontSize: 12,
+    marginTop: 10
+  }
+
+});

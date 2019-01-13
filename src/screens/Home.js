@@ -15,23 +15,23 @@ class Home extends React.Component {
     super(props);
   }
 
-  componentWillMount() {
-    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
-  }
+  // componentWillMount() {
+  //   BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+  // }
 
-  componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-  }
+  // componentWillUnmount() {
+  //   BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  // }
 
-  handleBackButton = () => {
-    BackHandler.exitApp();
-    return true;
-  };
+  // handleBackButton = () => {
+  //   BackHandler.exitApp();
+  //   return true;
+  // };
   render() {
     return (
       <Container style={{ justifyContent: 'center', backgroundColor: '#C3E4DD' }}>
         <View style={styles.wms}>
-          <Image source={require('../../assets/icon48.png')}/>
+          <Image source={require('../../assets/logo.png')} style={{width:150,height:150,margin:20}}/>
           <Text style={{color:'#566792', fontWeight:'bold', fontSize:20}}>Water Monitoring System</Text>
         </View>
         <View style={styles.card}>
@@ -50,7 +50,7 @@ class Home extends React.Component {
             <Image source={require('../../assets/iconsuhu.png')} style={{width: 25, height: 80, margin:10}}/>
             <View style={styles.title}>
               <View style={styles.vh1}>
-                <Text style={styles.h1}>30</Text>
+                <Text style={styles.h1}>30&deg;</Text>
               </View>
               <View style={styles.vtext}>
                 <Text note style={{color:'#000'}}>Temperature</Text>
@@ -63,7 +63,7 @@ class Home extends React.Component {
             <Thumbnail square source={require('../../assets/icontinggi.png')} />
             <View style={styles.title}>
               <View style={styles.vh1}>
-                <Text style={styles.h1}>6.7</Text>
+                <Text style={styles.h1}>41</Text>
               </View>
               <View style={styles.vtext}>
                 <Text note style={{color:'#000'}}>Height(cm)</Text>
@@ -74,7 +74,7 @@ class Home extends React.Component {
             <View style={styles.carditems}>
               <View style={styles.title}>
                 <View style={styles.vh1}>
-                  <Image source={require('../../assets/iconstats.png')} style={{width: 90, height: 60}}/>
+                  <Image source={require('../../assets/iconstats.png')} style={{width: 75, height: 50}}/>
                 </View>
                 <View style={styles.vtext}>
                   <Text style={{fontWeight:'bold'}}>Statistic</Text>
@@ -83,13 +83,16 @@ class Home extends React.Component {
             </View>
           </TouchableOpacity>
         </View>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('About')}>
         <View style={styles.wms}>
           <View style={styles.about}>
             <View style={styles.aboutitem}>
               <Thumbnail source={require('../../assets/iconinfo.png')} style={styles.imgabout}/>
-              <Text style={{fontWeight:'bold'}}>  About</Text></View>
+              <Text style={{fontWeight:'bold'}}>  About</Text>
+            </View>
           </View>
         </View>
+        </TouchableOpacity>
       </Container>
     )
   }

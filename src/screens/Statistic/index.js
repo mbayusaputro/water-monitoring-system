@@ -17,8 +17,11 @@ const Index = createMaterialTopTabNavigator ({
     }
 },{
     tabBarOptions: {
-        activeTintColor: '#000',
-        inactiveTintColor: '#566792',    
+        activeTintColor: '#566792',
+        inactiveTintColor: '#566792',
+        labelStyle : {
+            fontWeight: 'bold'
+        },
         indicatorStyle: {
             backgroundColor: '#566792',
           },
