@@ -8,7 +8,6 @@ import {
 import { 
   Container, 
   Thumbnail, 
-  Icon, 
   Text } from 'native-base';
 
 class Home extends React.Component {
