@@ -9,10 +9,26 @@ import {
   Container, 
   Thumbnail, 
   Text } from 'native-base';
+import axios from 'axios';
 
 class Home extends React.Component {
   constructor(props) {
     super(props);
+      this.state = {
+        suhu: '',
+        ph: '',
+        tinggi: ''
+      }
+  }
+
+  componentDidMount() {
+    axios.get('http://139.180.220.65:3333/data?limit=all').then((res) => {
+      this.setState({
+        suhu: Math.round(res.data.suhu[res.data.suhu.length-1]),
+        ph: res.data.ph[res.data.ph.length-1],
+        tinggi: Math.round(res.data.tinggi[res.data.tinggi.length-1])
+      })
+    })
   }
 
   // componentWillMount() {
@@ -39,7 +55,7 @@ class Home extends React.Component {
             <Thumbnail source={require('../../assets/iconph.png')} />
             <View style={styles.title}>
               <View style={styles.vh1}>
-                <Text style={styles.h1}>6.7</Text>
+                <Text style={styles.h1}>{this.state.ph}</Text>
               </View>
               <View style={styles.vtext}>
                 <Text note style={{color:'#000'}}>Water pH</Text>
@@ -50,7 +66,7 @@ class Home extends React.Component {
             <Image source={require('../../assets/iconsuhu.png')} style={{width: 25, height: 80, margin:10}}/>
             <View style={styles.title}>
               <View style={styles.vh1}>
-                <Text style={styles.h1}>30&deg;</Text>
+                <Text style={styles.h1}>{this.state.suhu}&deg;</Text>
               </View>
               <View style={styles.vtext}>
                 <Text note style={{color:'#000'}}>Temperature</Text>
@@ -63,7 +79,7 @@ class Home extends React.Component {
             <Thumbnail square source={require('../../assets/icontinggi.png')} />
             <View style={styles.title}>
               <View style={styles.vh1}>
-                <Text style={styles.h1}>41</Text>
+                <Text style={styles.h1}>{this.state.tinggi}</Text>
               </View>
               <View style={styles.vtext}>
                 <Text note style={{color:'#000'}}>Height(cm)</Text>
