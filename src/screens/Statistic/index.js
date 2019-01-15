@@ -17,6 +17,7 @@ const Index = createMaterialTopTabNavigator ({
     }
 },{
     tabBarOptions: {
+        height: 50,
         activeTintColor: '#566792',
         inactiveTintColor: '#566792',
         labelStyle : {

@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, BackHandler, Text, Dimensions, StyleSheet, Switch} from 'react-native';
-import { Spinner, Container, Content } from 'native-base';
+import { View, Text, Dimensions, StyleSheet, Switch, TouchableOpacity } from 'react-native';
+import { Spinner, Container, Content, Icon } from 'native-base';
 import { LineChart } from 'react-native-chart-kit';
 import axios from 'axios';
 
@@ -23,46 +23,59 @@ class Graph extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      chartPH: false,
-      chartC: false,
+      chart: false,
       ikan: [],
-      tanggal: []
+      tanggal: [],
+      page: 1
     }
   }
 
   componentDidMount() {
-    axios.get('http://139.180.220.65:3333/data?limit=all').then((res) => {
-      this.setState({ ikan: res.data, tanggal: res.data.waktu })
+    this.getChart(1)
+  }
+
+  getChart(number){
+    axios.get('http://139.180.220.65:3333/data?page='+number).then((res) => {
+      this.setState({ ikan: res.data, tanggal: res.data.waktu, page: number })
     })
   }
-
-  componentWillMount() {
-    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
-  }
-
-  componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-  }
-
-  cWater(){
-    this.setState({chartPH:true});
-  }
-
-  cSuhu(){
-    this.setState({chartC:true});
-  }
-
-  handleBackButton = () => {
-    this.props.navigation.pop()
-    return true;
-  };
 
   renderLoading() {
     return (<Spinner />)
   }
 
-  renderChartph(){
-    if(this.state.chartPH === true){
+  renderText(){
+    if(this.state.chart === true){
+      return(
+        <Text style={styles.title}>Temperature</Text>
+      )
+    }else{
+      return(
+        <Text style={styles.title}>Water pH</Text>
+      )
+    }
+  }
+
+  renderChart(){
+    if(this.state.chart === true){
+      return(
+        <LineChart
+        data={{
+          labels: this.state.tanggal,
+          datasets: [{
+            data: this.state.ikan.suhu
+          }]
+        }}
+        width={width}
+        height={height}
+        chartConfig={chartSuhu}
+        bezier
+        style={{
+          marginVertical: 8,
+        }}
+        />
+      )
+    }else{
       return(
         <LineChart
         data={{
@@ -83,28 +96,6 @@ class Graph extends React.Component {
     }
   }
 
-  renderChartc(){
-    if(this.state.chartC === true){
-      return(
-        <LineChart
-        data={{
-          labels: this.state.tanggal,
-          datasets: [{
-            data: this.state.ikan.suhu
-          }]
-        }}
-        width={width}
-        height={height}
-        chartConfig={chartSuhu}
-        bezier
-        style={{
-          marginVertical: 8,
-        }}
-        />
-      )
-    }
-  }
-
   render() {
     return (
       <Container>
@@ -112,21 +103,33 @@ class Graph extends React.Component {
           {
             (this.state.ikan.length < 1) ? <Spinner /> :
             <View>
-              <View style={{flexDirection:'row'}}>
-                <Text style={styles.title}>Water pH</Text>
-                <Switch style={styles.note}
-                onValueChange={value => this.setState({ chartPH: value })}
-                value={this.state.chartPH}/>
-              </View>
-              {this.renderChartph()}
 
               <View style={{flexDirection:'row'}}>
-                <Text style={styles.title}>Temperature </Text>
+              {this.renderText()}
                 <Switch style={styles.note}
-                onValueChange={value => this.setState({ chartC: value })}
-                value={this.state.chartC}/>
+                onValueChange={value => this.setState({ chart: value, title: value })}
+                value={this.state.chart}/>
               </View>
-              {this.renderChartc()}
+              {this.renderChart()}
+
+              <View style={{flexDirection:'row', justifyContent:'center'}}>
+                <TouchableOpacity style={{margin:10}} onPress={()=>{
+                  if(this.state.page>1){
+                    const back = this.state.page-1;
+                    this.getChart(back);
+                  }
+                }}>
+                  <Icon style={{color:'#566792'}} name='arrow-back' />
+                </TouchableOpacity>
+                <TouchableOpacity style={{margin:10}} onPress={()=>{
+                  if(this.state.page<4){
+                    const next = this.state.page+1;
+                    this.getChart(next);
+                  }
+                }}>
+                  <Icon style={{color:'#566792'}} name='arrow-forward' />
+                </TouchableOpacity>
+              </View>
 
               <View style={styles.text}>
                 <Text style={styles.texttitle}>Information : </Text>
@@ -159,7 +162,6 @@ const styles = StyleSheet.create({
     marginVertical: 8
   },
   text: {
-    marginTop: 30,
     paddingLeft: 20
   },
   texttitle: {

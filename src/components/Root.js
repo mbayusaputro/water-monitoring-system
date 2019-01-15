@@ -29,7 +29,6 @@ const Root = createStackNavigator ({
         headerStyle : {
             backgroundColor: '#C3E4DD',
             elevation: 0,
-            height: 50
         },
         headerTintColor : '#566792'
     }

@@ -1,8 +1,7 @@
 import React from 'react';
 import {
   StyleSheet,
-  WebView as Tables,
-  BackHandler } from 'react-native';
+  WebView as Tables } from 'react-native';
 import { Spinner } from 'native-base';
 
 class Table extends React.Component{
@@ -10,18 +9,6 @@ class Table extends React.Component{
     super(props);
   }
 
-  componentWillMount() {
-    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
-  }
-
-  componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-  }
-
-  handleBackButton = () => {
-    this.props.navigation.pop()
-    return true;
-  };
   renderLoading(){
     return(<Spinner />)
   }
