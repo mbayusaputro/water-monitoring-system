@@ -26,7 +26,8 @@ class Graph extends React.Component {
       chart: false,
       ikan: [],
       tanggal: [],
-      page: 1
+      page: 1,
+      lastPage : 1
     }
   }
 
@@ -36,7 +37,7 @@ class Graph extends React.Component {
 
   getChart(number){
     axios.get('http://139.180.220.65:3333/data?page='+number).then((res) => {
-      this.setState({ ikan: res.data, tanggal: res.data.waktu, page: number })
+      this.setState({ ikan: res.data, tanggal: res.data.waktu, page: number, lastPage : res.data.lastPage })
     })
   }
 
@@ -119,15 +120,21 @@ class Graph extends React.Component {
                     this.getChart(back);
                   }
                 }}>
-                  <Icon style={{color:'#566792'}} name='arrow-back' />
+                  <Icon style={{color:'#566792'}} name='ios-arrow-dropleft' />
                 </TouchableOpacity>
+                <Text style={{ margin : 10 }}>
+                  page 
+                    <Text style={{ fontWeight : 'bold', marginLeft : 5, marginRight : 5 }}>  {this.state.page}  </Text> 
+                  To 
+                    <Text style={{ fontWeight : 'bold' , marginLeft : 5, marginRight : 5}}>  {this.state.lastPage}  </Text>
+                </Text>
                 <TouchableOpacity style={{margin:10}} onPress={()=>{
                   if(this.state.page<4){
                     const next = this.state.page+1;
                     this.getChart(next);
                   }
                 }}>
-                  <Icon style={{color:'#566792'}} name='arrow-forward' />
+                  <Icon style={{color:'#566792'}} name='ios-arrow-dropright' />
                 </TouchableOpacity>
               </View>
 
